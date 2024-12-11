@@ -1,17 +1,12 @@
 package org.creator.autovideocreator.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
+@Accessors(chain = true)
 @Entity
 @Table(name = "accounts")
 @RequiredArgsConstructor
@@ -24,8 +19,28 @@ public class Account {
     @Column(nullable = false)
     private String securityToken;
     @Column(nullable = false)
-    private String accountType;
+    @Enumerated(EnumType.STRING)
+    private AccountType accountType;
     @ManyToOne
     @JoinColumn(name = "project_id", nullable = false)
     private Project project;
+
+    public static enum AccountType {
+        YOUTUBE("Youtube");
+
+        private final String displayName;
+
+        AccountType(String displayName) {
+            this.displayName = displayName;
+        }
+
+        public String getDisplayName() {
+            return displayName;
+        }
+
+        @Override
+        public String toString() {
+            return displayName;
+        }
+    }
 }

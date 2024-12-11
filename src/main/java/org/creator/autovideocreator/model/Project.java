@@ -13,11 +13,15 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-@Entity()
+@Accessors(chain = true)
+@Entity
 @Table(name = "projects")
 @RequiredArgsConstructor
 @Setter
@@ -30,17 +34,21 @@ public class Project {
     private String name;
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<YoutubeVideo> youtubeVideos = new ArrayList<>();
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-    private List<InternalVideo> internalVideos = new ArrayList<>();
+    @Column(nullable = false)
+    private String anotherVideo = "OkqWUiUTqx4";
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Account> accounts = new ArrayList<>();
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UploadTime> uploadTimes = new ArrayList<>();
+    private Set<UploadTime> uploadTimes = new HashSet<>();
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Tag> tags = new HashSet<>();
+    @Column(nullable = false)
+    private Boolean isOverlay;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
     @Column(nullable = false)
-    private int videosDuration = 60;
+    private Integer videosDuration = 60;
     @Column
-    private String timezoneId = "UTC";
+    private String timezoneId = "+0";
 }

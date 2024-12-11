@@ -1,15 +1,18 @@
 package org.creator.autovideocreator.mapper;
 
 import org.creator.autovideocreator.configuration.MapperConfig;
-import org.creator.autovideocreator.dto.impl.CreateProjectDto;
-import org.creator.autovideocreator.dto.impl.ProjectDto;
+import org.creator.autovideocreator.dto.project.CreateProjectDto;
+import org.creator.autovideocreator.dto.project.ResponseProjectDto;
 import org.creator.autovideocreator.model.Project;
 import org.mapstruct.Mapper;
 
+import java.util.List;
 
-@Mapper(config = MapperConfig.class)
+@Mapper(config = MapperConfig.class, uses = {TagMapper.class, UploadTimeMapper.class})
 public interface ProjectMapper {
-    ProjectDto toDto(Project project);
-    Project toModel(ProjectDto projectDto);
-    Project toModel(CreateProjectDto projectDto);
+    ResponseProjectDto toDto(Project project);
+
+    List<ResponseProjectDto> toDto(List<Project> projects);
+
+    Project toModel(CreateProjectDto createProjectDto);
 }

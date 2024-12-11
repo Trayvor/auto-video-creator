@@ -1,13 +1,10 @@
 package org.creator.autovideocreator.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.creator.autovideocreator.dto.impl.CreateUserDto;
-import org.creator.autovideocreator.dto.impl.UserDto;
-import org.creator.autovideocreator.service.database.UserService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.creator.autovideocreator.dto.user.CreateUserDto;
+import org.creator.autovideocreator.dto.user.ResponseUserDto;
+import org.creator.autovideocreator.service.data.UserService;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -16,7 +13,12 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping()
-    public UserDto createUser(@RequestBody CreateUserDto createUserDto) {
+    public ResponseUserDto createUser(@RequestBody CreateUserDto createUserDto) {
         return userService.save(createUserDto);
+    }
+
+    @GetMapping("/{telegramId}")
+    public ResponseUserDto getUser(@PathVariable String telegramId) {
+        return userService.getByTelegramId(telegramId);
     }
 }
